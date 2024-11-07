@@ -6,7 +6,7 @@
 /*   By: jnauroy <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:52:34 by jnauroy           #+#    #+#             */
-/*   Updated: 2024/11/06 18:26:41 by jnauroy          ###   ########.fr       */
+/*   Updated: 2024/11/07 18:17:06 by jnauroy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,34 +40,33 @@ int	check_for_bsn(char *str)
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\n')
-			return (1);
+			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 char	*ft_create_str(char *src)
 {
 	size_t	n;
 	char	*dest;
-	
+	size_t	i;
+
 	n = 0;
-	while (src[n] != '\0')
-	{
-		if (src[n++] == '\n')
-			break;
-	}
+	while (src[n] != '\0' && src[n] != '\n')
+		n++;
+	if (src[n] == '\0')
+		n--;
 	dest = malloc(sizeof(char) * (n + 1));
 	if (!dest)
 		return (0);
-	n = 0;
-	while (src[n] != '\0')
+	i = 0;
+	while (i <= n)
 	{
-		dest[n] = src[n];
-		if (dest[n++] == '\n')
-			break;
+		dest[i] = src[i];
+		i++;
 	}
-	dest[n] = '\0';
+	dest[i] = '\0';
 	return (dest);
 }
 
@@ -84,14 +83,12 @@ char	*get_next_line(int fd)
 	buffer = NULL;
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	size = BUFFER_SIZE;
-	while (size != 0)
+	while (check_for_bsn(string))
 	{
 		size = read(fd, buffer, BUFFER_SIZE);
 		if (size == -1)
 			return (0);
 		string = ft_gnljoin(string, buffer);
-		if (check_for_bsn(string))
-			break ;
 	}
 	sentence = ft_create_str(string);
 	free(buffer);

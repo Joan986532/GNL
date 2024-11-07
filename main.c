@@ -6,7 +6,7 @@
 /*   By: jnauroy <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:14:09 by jnauroy           #+#    #+#             */
-/*   Updated: 2024/11/06 18:10:00 by jnauroy          ###   ########.fr       */
+/*   Updated: 2024/11/07 18:10:24 by jnauroy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@
 int	main(void)
 {
 	int	fd;
+	char *line;
 
+	line = "0";
 	fd = open("theclash.txt", O_RDONLY);
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	free(get_next_line(fd));
+	while (line != NULL) 
+	{
+		line = get_next_line(fd);
+		printf("%s", line);
+		free(line);
+	}
 }
